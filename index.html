@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PORTFOLIO_V1</title>
+    <style>
+        /* --- BRUTALIST VARIABLES --- */
+        :root {
+            --bg-color: #f0f0f0; /* Concrete White */
+            --ink-color: #000000; /* Pure Black */
+            --acid-green: #39ff14; /* The Green Hint */
+            --border-thick: 3px;
+            --hard-shadow: 6px 6px 0px 0px var(--ink-color);
+        }
+
+        /* --- RESET & TYPOGRAPHY --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--ink-color);
+            font-family: 'Courier New', Courier, monospace; /* Classic Brutalist Font */
+            line-height: 1.4;
+            overflow-x: hidden;
+            border: var(--border-thick) solid var(--ink-color);
+            min-height: 100vh;
+        }
+
+        h1, h2, h3 {
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+
+        a {
+            color: var(--ink-color);
+            text-decoration: none;
+            border-bottom: 2px solid var(--ink-color);
+        }
+
+        a:hover {
+            background-color: var(--ink-color);
+            color: var(--acid-green);
+        }
+
+        /* --- UTILITIES --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-left: var(--border-thick) solid var(--ink-color);
+            border-right: var(--border-thick) solid var(--ink-color);
+            background: white;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--ink-color);
+            color: var(--acid-green);
+            padding: 1rem 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+
+        .btn:hover {
+            background: var(--acid-green);
+            color: var(--ink-color);
+            outline: var(--border-thick) solid var(--ink-color);
+        }
+
+        .btn:active {
+            transform: translate(2px, 2px);
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: var(--border-thick) solid var(--ink-color);
+            background: var(--acid-green);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: var(--ink-color);
+            color: var(--bg-color);
+            padding: 0.2rem 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-weight: bold;
+            border-bottom: none;
+        }
+
+        .nav-links a:hover {
+            background: transparent;
+            text-decoration: underline;
+            color: var(--ink-color);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 6rem 2rem;
+            border-bottom: var(--border-thick) solid var(--ink-color);
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 8rem);
+            line-height: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .highlight {
+            background-color: var(--acid-green);
+            padding: 0 0.5rem;
+        }
+
+        /* --- MARQUEE (SCROLLING TEXT) --- */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            border-bottom: var(--border-thick) solid var(--ink-color);
+            background: var(--ink-color);
+            color: var(--bg-color);
+            padding: 1rem 0;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- PROJECTS GRID --- */
+        .section-title {
+            padding: 2rem;
+            font-size: 3rem;
+            border-bottom: var(--border-thick) solid var(--ink-color);
+            background: #fff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .card {
+            border-right: var(--border-thick) solid var(--ink-color);
+            border-bottom: var(--border-thick) solid var(--ink-color);
+            padding: 2rem;
+            background: white;
+            transition: 0.2s;
+            position: relative;
+        }
+
+        /* Interaction: The card glides up on hover */
+        .card:hover {
+            background: #fafafa;
+        }
+
+        .card:hover h3 {
+            background: var(--acid-green);
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .tags {
+            margin: 1rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            font-size: 0.8rem;
+            border: 1px solid var(--ink-color);
+            padding: 0.2rem 0.5rem;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 4rem 2rem;
+            background: var(--ink-color);
+            color: var(--bg-color);
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--acid-green);
+            border-color: var(--acid-green);
+        }
+
+        footer a:hover {
+            background: var(--acid-green);
+            color: var(--ink-color);
+        }
+
+        /* --- MOBILE TWEAKS --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none; /* Keep it simple for v1 */
+            }
+            .hero h1 {
+                font-size: 3rem;
+            }
+            .container {
+                border: none;
+                width: 100%;
+                padding: 0;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .card {
+                border-right: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">USER_NAME_HERE</div>
+        <div class="nav-links">
+            <a href="#work">WORK</a>
+            <a href="#about">ABOUT</a>
+            <a href="#contact">CONTACT</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="hero">
+            <p style="margin-bottom: 1rem;">// FULL STACK DEVELOPER</p>
+            <h1>I'm<br><span class="highlight">Aditya Deshmukh</span><br>I build, code, develop</h1>
+            <br>
+            <a href="#work" class="btn">View Projects ↓</a>
+        </section>
+    </div>
+
+    <div class="marquee-container">
+        <div class="marquee-content">
+            OPEN TO WORK /// AVAILABLE FOR FREELANCE /// JAVASCRIPT /// REACT /// PYTHON /// DESIGN /// OPEN TO WORK /// AVAILABLE FOR FREELANCE /// JAVASCRIPT /// REACT /// PYTHON /// DESIGN ///
+        </div>
+    </div>
+
+    <div class="container" id="work">
+        <h2 class="section-title">SELECTED_WORKS</h2>
+        
+        <div class="grid">
+            <article class="card">
+                <h3>Project phishing_Hook</h3>
+                <p>Python-based URL interrogation engine. Leverages Google's API to identify and neutralize social engineering vectors before execution.</p>
+                <div class="tags">
+                    <span class="tag">PYTHON</span>
+                    <span class="tag">HTML</span>
+                    <span class="tag">API</span>
+                </div>
+                <br>
+                <a href="#" class="btn">Launch -></a>
+            </article>
+
+            <article class="card">
+                <h3>NEON_ECOMMERCE</h3>
+                <p>Headless Shopify build focusing on raw speed and brutalist aesthetics. Increased conversion by 15%.</p>
+                <div class="tags">
+                    <span class="tag">NEXT.JS</span>
+                    <span class="tag">SHOPIFY</span>
+                    <span class="tag">STRIPE</span>
+                </div>
+                <br>
+                <a href="#" class="btn">Launch -></a>
+            </article>
+
+            <article class="card">
+                <h3>CLI_TOOLKIT</h3>
+                <p>An open-source CLI tool for generating brutalist boilerplates instantly.</p>
+                <div class="tags">
+                    <span class="tag">RUST</span>
+                    <span class="tag">CLI</span>
+                </div>
+                <br>
+                <a href="#" class="btn">GitHub -></a>
+            </article>
+             <article class="card">
+                <h3>API_GATEWAY</h3>
+                <p>Robust backend infrastructure handling 10k requests/second.</p>
+                <div class="tags">
+                    <span class="tag">GO</span>
+                    <span class="tag">DOCKER</span>
+                </div>
+                <br>
+                <a href="#" class="btn">Docs -></a>
+            </article>
+        </div>
+    </div>
+
+    <footer id="contact">
+        <h2>LET'S BUILD SOMETHING</h2>
+        <br>
+        <p>Drop a line at <a href="mailto:adityakishordeshmukh@outlook.com">adityakishordeshmukh@outlook.com</a></p>
+        <br><br>
+        <p style="font-size: 0.8rem; opacity: 0.7;">© 2024 SYSTEM_V1 // BRUTALIST_THEME</p>
+    </footer>
+
+</body>
+</html>
