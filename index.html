@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PORTFOLIO_V1</title>
+    <title>PORTFOLIO_V2</title>
     <style>
         /* --- BRUTALIST VARIABLES --- */
         :root {
             --bg-color: #f0f0f0; /* Concrete White */
             --ink-color: #000000; /* Pure Black */
-            --acid-green: #39ff14; /* The Green Hint */
+            --acid-green: #39ff14; /* Matrix Green */
             --border-thick: 3px;
             --hard-shadow: 6px 6px 0px 0px var(--ink-color);
         }
@@ -24,7 +24,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--ink-color);
-            font-family: 'Courier New', Courier, monospace; /* Classic Brutalist Font */
+            font-family: 'Courier New', Courier, monospace;
             line-height: 1.4;
             overflow-x: hidden;
             border: var(--border-thick) solid var(--ink-color);
@@ -41,11 +41,23 @@
             color: var(--ink-color);
             text-decoration: none;
             border-bottom: 2px solid var(--ink-color);
+            cursor: pointer;
         }
 
         a:hover {
             background-color: var(--ink-color);
             color: var(--acid-green);
+        }
+
+        /* --- MATRIX RAIN CANVAS --- */
+        #matrix-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Puts it behind text */
+            opacity: 0.15; /* Subtle effect */
         }
 
         /* --- UTILITIES --- */
@@ -56,6 +68,8 @@
             border-left: var(--border-thick) solid var(--ink-color);
             border-right: var(--border-thick) solid var(--ink-color);
             background: white;
+            position: relative; /* Needed for z-index layering */
+            z-index: 1;
         }
 
         .btn {
@@ -68,6 +82,7 @@
             border: none;
             cursor: pointer;
             transition: 0.1s;
+            border-bottom: none; /* Override standard link border */
         }
 
         .btn:hover {
@@ -76,8 +91,15 @@
             outline: var(--border-thick) solid var(--ink-color);
         }
 
-        .btn:active {
-            transform: translate(2px, 2px);
+        .btn-outline {
+            background: transparent;
+            color: var(--ink-color);
+            border: 3px solid var(--ink-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--ink-color);
+            color: var(--bg-color);
         }
 
         /* --- NAVIGATION --- */
@@ -88,6 +110,8 @@
             padding: 1.5rem;
             border-bottom: var(--border-thick) solid var(--ink-color);
             background: var(--acid-green);
+            position: relative;
+            z-index: 10;
         }
 
         .logo {
@@ -108,22 +132,20 @@
             border-bottom: none;
         }
 
-        .nav-links a:hover {
-            background: transparent;
-            text-decoration: underline;
-            color: var(--ink-color);
-        }
-
         /* --- HERO SECTION --- */
         .hero {
             padding: 6rem 2rem;
             border-bottom: var(--border-thick) solid var(--ink-color);
+            position: relative;
+            overflow: hidden;
         }
 
         .hero h1 {
             font-size: clamp(3rem, 10vw, 8rem);
             line-height: 0.9;
             margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.8); /* Readable against rain */
+            display: inline-block;
         }
 
         .highlight {
@@ -131,7 +153,7 @@
             padding: 0 0.5rem;
         }
 
-        /* --- MARQUEE (SCROLLING TEXT) --- */
+        /* --- MARQUEE --- */
         .marquee-container {
             overflow: hidden;
             white-space: nowrap;
@@ -172,10 +194,8 @@
             padding: 2rem;
             background: white;
             transition: 0.2s;
-            position: relative;
         }
 
-        /* Interaction: The card glides up on hover */
         .card:hover {
             background: #fafafa;
         }
@@ -211,61 +231,122 @@
             text-align: center;
         }
 
-        footer a {
-            color: var(--acid-green);
-            border-color: var(--acid-green);
+        /* --- MODAL STYLES --- */
+        dialog {
+            border: var(--border-thick) solid var(--ink-color);
+            box-shadow: 10px 10px 0px 0px var(--ink-color);
+            padding: 0;
+            max-width: 800px;
+            width: 90%;
+            background: var(--bg-color);
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
         }
 
-        footer a:hover {
+        dialog::backdrop {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: grayscale(100%);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--ink-color);
+            color: var(--acid-green);
+            border-bottom: var(--border-thick) solid var(--ink-color);
+        }
+
+        /* Specific styles for Contact Modal */
+        #contactModal {
+            max-width: 500px;
+            padding: 2rem;
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .carousel-slide {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: none;
+        }
+
+        .carousel-slide.active {
+            display: block;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: var(--acid-green);
+            border: 2px solid var(--acid-green);
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+        }
+
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+
+        .carousel-btn:hover {
             background: var(--acid-green);
             color: var(--ink-color);
         }
 
-        /* --- MOBILE TWEAKS --- */
+        /* Mobile Tweaks */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none; /* Keep it simple for v1 */
-            }
-            .hero h1 {
-                font-size: 3rem;
-            }
-            .container {
-                border: none;
-                width: 100%;
-                padding: 0;
-            }
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            .card {
-                border-right: none;
-            }
+            .nav-links { display: none; }
+            .hero h1 { font-size: 3rem; }
+            .container { border: none; width: 100%; padding: 0; }
+            .grid { grid-template-columns: 1fr; }
+            .card { border-right: none; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">USER_NAME_HERE</div>
+        <div class="logo">USER_NAME</div>
         <div class="nav-links">
             <a href="#work">WORK</a>
             <a href="#about">ABOUT</a>
-            <a href="#contact">CONTACT</a>
+            <button onclick="document.getElementById('contactModal').showModal()" style="background:none; border:none; font-family:inherit; font-size:inherit; font-weight:bold; cursor:pointer;">CONTACT</button>
         </div>
     </nav>
 
     <div class="container">
         <section class="hero">
-            <p style="margin-bottom: 1rem;">// FULL STACK DEVELOPER</p>
-            <h1>I'm<br><span class="highlight">Aditya Deshmukh</span><br>I build, code, develop</h1>
+            <canvas id="matrix-canvas"></canvas>
+            
+            <p style="margin-bottom: 1rem; background:white; display:inline-block;">// FULLSTACK DEVELOPER</p>
+            <br>
+            <h1>I'm <br><span class="highlight">Aditya Deshmukh</span><br>I Build,<br>code,develop.</h1>
             <br>
             <a href="#work" class="btn">View Projects ↓</a>
+            <a href="Aditya_Deshmukh_Resume.pdf" class="btn btn-outline" download style="margin-left: 1rem;">
+                DOWNLOAD CV
+            </a>
         </section>
     </div>
 
     <div class="marquee-container">
         <div class="marquee-content">
-            OPEN TO WORK /// AVAILABLE FOR INTERNSHIPS /// JAVASCRIPT /// REACT /// PYTHON /// DESIGN /// OPEN TO WORK /// AVAILABLE FOR INTERNSHIPS /// JAVASCRIPT /// REACT /// PYTHON /// DESIGN ///
+            OPEN TO WORK /// AVAILABLE FOR FREELANCE /// JAVASCRIPT /// REACT /// PYTHON /// DESIGN /// OPEN TO WORK /// AVAILABLE FOR FREELANCE /// JAVASCRIPT /// REACT /// PYTHON /// DESIGN ///
         </div>
     </div>
 
@@ -273,16 +354,19 @@
         <h2 class="section-title">SELECTED_WORKS</h2>
         
         <div class="grid">
+            
             <article class="card">
-                <h3>Project phishing_Hook</h3>
-                <p>Python-based URL interrogation engine. Leverages Google's API to identify and neutralize social engineering vectors before execution.</p>
+                <h3>Phishing_Hook</h3>
+
+                <p>Real-time threat detection powered by Google's Safe Browsing architecture. Scans, verifies, and blocks deceptive endpoints instantly.</p> 
+                
                 <div class="tags">
                     <span class="tag">PYTHON</span>
-                    <span class="tag">HTML</span>
-                    <span class="tag">API</span>
+                    <span class="tag">GOOGLE API</span>
+                    <span class="tag">SECURITY</span>
                 </div>
                 <br>
-                <a href="#" class="btn">Launch -></a>
+                <button class="btn" onclick="openModal('modal-project1')">Launch -></button>
             </article>
 
             <article class="card">
@@ -290,24 +374,13 @@
                 <p>Headless Shopify build focusing on raw speed and brutalist aesthetics. Increased conversion by 15%.</p>
                 <div class="tags">
                     <span class="tag">NEXT.JS</span>
-                    <span class="tag">SHOPIFY</span>
                     <span class="tag">STRIPE</span>
                 </div>
                 <br>
-                <a href="#" class="btn">Launch -></a>
+                <button class="btn" onclick="alert('Add modal-project2 ID to create this!')">Launch Gallery [02]</button>
             </article>
 
             <article class="card">
-                <h3>CLI_TOOLKIT</h3>
-                <p>An open-source CLI tool for generating brutalist boilerplates instantly.</p>
-                <div class="tags">
-                    <span class="tag">RUST</span>
-                    <span class="tag">CLI</span>
-                </div>
-                <br>
-                <a href="#" class="btn">GitHub -></a>
-            </article>
-             <article class="card">
                 <h3>API_GATEWAY</h3>
                 <p>Robust backend infrastructure handling 10k requests/second.</p>
                 <div class="tags">
@@ -315,18 +388,131 @@
                     <span class="tag">DOCKER</span>
                 </div>
                 <br>
-                <a href="#" class="btn">Docs -></a>
+                <a href="#" class="btn">GitHub -></a>
             </article>
         </div>
     </div>
 
-    <footer id="contact">
-        <h2>LET'S BUILD SOMETHING</h2>
+    <footer>
+        <h2>END_OF_LINE</h2>
         <br>
-        <p>Drop a line at <a href="mailto:adityakishordeshmukh@outlook.com">adityakishordeshmukh@outlook.com</a></p>
-        <br><br>
-        <p style="font-size: 0.8rem; opacity: 0.7;">© 2024 SYSTEM_V1 // BRUTALIST_THEME</p>
+        <p style="font-size: 0.8rem; opacity: 0.7;">© 2026 SYSTEM_V2 // BRUTALIST_THEME</p>
     </footer>
 
+    <dialog id="contactModal">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2 style="margin: 0;">CONTACT_DATA</h2>
+            <button onclick="document.getElementById('contactModal').close()" style="background: black; color: white; border: none; padding: 0.5rem 1rem; cursor: pointer; font-weight: bold;">X</button>
+        </div>
+        <p>INITIATE COMMUNICATION PROTOCOL:</p>
+        <br>
+        <a href="mailto:adityakishordeshmukh@outlook.com" style="display: block; margin-bottom: 1rem; font-weight: bold;">>> SEND EMAIL</a>
+        <a href="https://www.linkedin.com/in/adityakishordeshmukh" style="display: block; font-weight: bold;">>> LINKEDIN TERMINAL</a>
+    </dialog>
+
+    <dialog id="modal-project1">
+        <div class="modal-header">
+            <h3>HOOK_HUNTER_GALLERY</h3>
+            <button onclick="closeModal('modal-project1')" style="background:none; border:none; color:var(--acid-green); font-size:1.5rem; cursor:pointer;">[X]</button>
+        </div>
+
+        <div class="carousel-container" id="carousel-1">
+            <img src="safesite.png" class="carousel-slide active" alt="Terminal">
+            <img src="malwaresite.png" class="carousel-slide" alt="Code">
+            <img src="phishingsite.png" class="carousel-slide" alt="Blocked">
+            <img src="unwantedsite.png" class="carousel-slide" alt="Blocked">
+
+            <button class="carousel-btn prev-btn" onclick="moveSlide('carousel-1', -1)">&#10094;</button>
+            <button class="carousel-btn next-btn" onclick="moveSlide('carousel-1', 1)">&#10095;</button>
+        </div>
+    </dialog>
+
+    <script>
+        // --- 1. MODAL LOGIC ---
+        function openModal(modalId) {
+            const dialog = document.getElementById(modalId);
+            if(dialog) dialog.showModal();
+        }
+
+        function closeModal(modalId) {
+            const dialog = document.getElementById(modalId);
+            if(dialog) dialog.close();
+        }
+
+        // --- 2. CAROUSEL LOGIC ---
+        function moveSlide(carouselId, direction) {
+            const container = document.getElementById(carouselId);
+            const slides = container.getElementsByClassName('carousel-slide');
+            let activeIndex = 0;
+
+            for (let i = 0; i < slides.length; i++) {
+                if (slides[i].classList.contains('active')) {
+                    activeIndex = i;
+                    slides[i].classList.remove('active');
+                    break;
+                }
+            }
+
+            let newIndex = activeIndex + direction;
+            if (newIndex >= slides.length) newIndex = 0;
+            if (newIndex < 0) newIndex = slides.length - 1;
+
+            slides[newIndex].classList.add('active');
+        }
+
+        // Close modals on backdrop click
+        document.querySelectorAll('dialog').forEach(dialog => {
+            dialog.addEventListener('click', (e) => {
+                const rect = dialog.getBoundingClientRect();
+                if (e.clientX < rect.left || e.clientX > rect.right || 
+                    e.clientY < rect.top || e.clientY > rect.bottom) {
+                    dialog.close();
+                }
+            });
+        });
+
+        // --- 3. MATRIX RAIN EFFECT ---
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for(let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function draw() {
+            ctx.fillStyle = 'rgba(240, 240, 240, 0.1)'; // Fade effect (matches bg color)
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#39ff14'; // Green text
+            ctx.font = fontSize + 'px monospace';
+
+            for(let i = 0; i < drops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if(drops[i] * fontSize > canvas.height && Math.random() > 0.975){
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(draw, 50);
+    </script>
 </body>
 </html>
