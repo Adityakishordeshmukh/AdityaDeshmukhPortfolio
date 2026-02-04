@@ -357,9 +357,7 @@
             
             <article class="card">
                 <h3>Phishing_Hook</h3>
-
                 <p>Real-time threat detection powered by Google's Safe Browsing architecture. Scans, verifies, and blocks deceptive endpoints instantly.</p> 
-                
                 <div class="tags">
                     <span class="tag">PYTHON</span>
                     <span class="tag">GOOGLE API</span>
@@ -370,14 +368,15 @@
             </article>
 
             <article class="card">
-                <h3>NEON_ECOMMERCE</h3>
-                <p>Headless Shopify build focusing on raw speed and brutalist aesthetics. Increased conversion by 15%.</p>
+                <h3>Scrap_Chef</h3>
+                <p>a sustainable food-tech solution that combats food waste by using Generative AI to convert leftover ingredients into budget-friendly meal plans. Features include real-time nutritional analysis, verified recipe fetching via hybrid API architecture, and a responsive glassmorphism UI.</p>
                 <div class="tags">
-                    <span class="tag">NEXT.JS</span>
-                    <span class="tag">STRIPE</span>
+                    <span class="tag">PYTHON</span>
+                    <span class="tag">WEB DEV</span>
+                    <span class="tag">GEMINI</span>
                 </div>
                 <br>
-                <button class="btn" onclick="alert('Add modal-project2 ID to create this!')">Launch Gallery [02]</button>
+                <button class="btn" onclick="openModal('modal-project2')">Launch -></button>
             </article>
 
             <article class="card">
@@ -412,7 +411,7 @@
 
     <dialog id="modal-project1">
         <div class="modal-header">
-            <h3>HOOK_HUNTER_GALLERY</h3>
+            <h3>Phishing_Hook</h3>
             <button onclick="closeModal('modal-project1')" style="background:none; border:none; color:var(--acid-green); font-size:1.5rem; cursor:pointer;">[X]</button>
         </div>
 
@@ -424,6 +423,22 @@
 
             <button class="carousel-btn prev-btn" onclick="moveSlide('carousel-1', -1)">&#10094;</button>
             <button class="carousel-btn next-btn" onclick="moveSlide('carousel-1', 1)">&#10095;</button>
+        </div>
+    </dialog>
+
+    <dialog id="modal-project2">
+        <div class="modal-header">
+            <h3>Scrap_Chef</h3>
+            <button onclick="closeModal('modal-project2')" style="background:none; border:none; color:var(--acid-green); font-size:1.5rem; cursor:pointer;">[X]</button>
+        </div>
+
+        <div class="carousel-container" id="carousel-outline">
+            <img src="Frontpage.png" class="carousel-slide active" alt="Terminal">
+            <img src="Output.png" class="carousel-slide" alt="Code">
+            <img src="Database.png" class="carousel-slide" alt="Blocked">
+
+            <button class="carousel-btn prev-btn" onclick="moveSlide('carousel-outline', -1)">&#10094;</button>
+            <button class="carousel-btn next-btn" onclick="moveSlide('carousel-outline', 1)">&#10095;</button>
         </div>
     </dialog>
 
@@ -442,6 +457,9 @@
         // --- 2. CAROUSEL LOGIC ---
         function moveSlide(carouselId, direction) {
             const container = document.getElementById(carouselId);
+            // Safety check
+            if (!container) return; 
+
             const slides = container.getElementsByClassName('carousel-slide');
             let activeIndex = 0;
 
